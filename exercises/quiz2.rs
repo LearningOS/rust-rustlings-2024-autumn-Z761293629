@@ -41,7 +41,7 @@ mod my_module {
                 Command::Uppercase => output.push(string.to_uppercase()),
                 Command::Trim => output.push(string.trim().to_string()),
                 Command::Append(c) =>{
-                   let  s = (0..*c).map(|_|"bar").collect::<Vec<_>>().join("");
+                   let  s = (0..*c).map(|_|"bar").collect::<String>();
                    output.push(format!("{}{}",string,s));
                 }
             }
