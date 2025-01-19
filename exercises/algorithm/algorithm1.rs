@@ -69,15 +69,34 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+	pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self
+    where
+        T: PartialOrd + Clone,
+    {
+        //TODO
+        let mut merged = LinkedList::default();
+
+        let mut a_ptr = list_a.start;
+        let mut b_ptr = list_b.start;
+
+        while a_ptr.is_some() || b_ptr.is_some() {
+            let a_val = a_ptr.map(|ptr| unsafe { (*ptr.as_ptr()).val.clone() });
+            let b_val = b_ptr.map(|ptr| unsafe { (*ptr.as_ptr()).val.clone() });
+
+            if a_val.is_some() && (b_val.is_none() || a_val <= b_val) {
+                unsafe {
+                    merged.add(a_val.unwrap());
+                    a_ptr = (*a_ptr.unwrap().as_ptr()).next
+                }
+            } else if b_val.is_some() {
+                unsafe {
+                    merged.add(b_val.unwrap());
+                    b_ptr = (*b_ptr.unwrap().as_ptr()).next
+                }
+            }
         }
-	}
+        merged
+    }
 }
 
 impl<T> Display for LinkedList<T>
